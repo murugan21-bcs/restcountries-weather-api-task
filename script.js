@@ -1,4 +1,6 @@
-var res = fetch("https://restcountries.com/v3.1/al")
+const restcountries = fetch("https://restcountries.com/v3.1/all");
+
+restcountries
 .then((data) => data.json())
 .then((data2) => {
 
@@ -41,7 +43,53 @@ carddiv.innerHTML = `
 
 <button id="button" class="btn btn-outline-secondary" onclick="getWeatherData('${data2[i].name.common}')">Click for weather</button>
 
-</div>`
-}
+</div>
 
+</div>
+
+</div>
+
+</div>`;
+
+rowContainer.appendChild(carddiv);
+}
+col.appendChild(rowContainer);
+
+container.appendChild(row);
+container.appendChild(col);
+
+document.body.append(container);
 });
+
+function getWeatherData(restCountryName) {
+
+let apiKey = "7bc5de981b938a24f9ec6fadf74beec5";
+let weatherurl = `https://api.openweathermap.org/data/2.5/weather?q=${restCountryName}&appid=${apiKey}`;
+
+
+fetch(weatherurl)
+.then((response) => response.json())
+.then((weatherData) => {
+console.log(weatherData);
+
+let weather = document.getElementById(
+`weather${restCountryName}`
+);
+weather.innerHTML =
+` <p><b>Min Temperature:</b> ${weatherData.main.temp_min}°C</p>
+
+<p><b>Max Temperature:</b> ${weatherData.main.temp_max}°C</p>
+
+<p><b>Humidity:</b> ${weatherData.main.humidity}%</p>`;
+
+
+})
+
+
+.catch((error) => {
+
+console.error("error fetching weather data. :", error);
+alert`error fetching weather data.`;
+});
+
+}
